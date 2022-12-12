@@ -1,7 +1,6 @@
 <?php
 
-class Conection
-{
+class Conection {
 
     private $server;
     private $user;
@@ -15,14 +14,14 @@ class Conection
         $listing = $this->dataConection();
 
         foreach ($listing as $key => $value) {
-            $this->server   = $value['$server'];
-            $this->user     = $value['$user'];
-            $this->password = $value['$password'];
-            $this->database = $value['$database'];
-            $this->port     = $value['$port'];
+            $this->server   = $value['server'];
+            $this->user     = $value['user'];
+            $this->password = $value['password'];
+            $this->database = $value['database'];
+            $this->port     = $value['port'];
         }
 
-        $this->connection = new mysqli(
+        $this->conection = new mysqli(
             $this->server,
             $this->user, 
             $this->password, 
@@ -30,21 +29,41 @@ class Conection
             $this->port
         );
 
-        // true - have error
-        // NULL - dont have error
+        //  have error      - int (1049)
+        //  dont have error - int (0)
 
         if ($this->conection->connect_errno) {
-            echo 'ha fallado la conexion.';
-            die;
+            die('Connect Error: ' . $this->conection->connect_errno);
         }
 
         echo 'conexion exitosa';
     }
 
-    private function dataConection()
-    {
+    private function dataConection() {
+
         $direction = dirname(__FILE__);
         $json_data = file_get_contents($direction . "/" . "config");
         return json_decode($json_data, true);
+    }
+
+    private function convertUTF8(array $array) :array {
+        
+        array_walk_recursive($array, function (&$item, $key) {
+            if (!mb_detect_encoding($item, "utf-8", true)) {
+                $item = utf8_decode($item);
+            }
+        });
+
+        return $array;
+    }
+
+    public function getData($sql) {
+        $results = $this->conection->query($sql);
+        $resultArr = [];
+        foreach ($results as $key) {
+            $resultArr[] = $key;
+        }
+
+        return $this->convertUTF8($resultArr);
     }
 }
