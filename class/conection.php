@@ -67,16 +67,25 @@ class Conection {
         return $this->convertUTF8($resultArr);
     }
 
+    // Este metodo debe usarse con una sentencia
+    // INSERT para insertar registros.
 
-    // retorna 1 si una fila ha sido afectada
-    // retorna -1 si no se ha afectado ninguna fila
+    // inserta un registro y además 
+    // retorna 1 si una fila ha sido afectada, es decir si hubo registro.
+    // retorna -1 si no se ha afectado ninguna fila, no hubo registro.
     public function nonQuery(string $sql) :int {
         $results = $this->conection->query($sql);
         return $this->conection->affected_rows;
     }
     
-    // retorna el id 
-    public function nonQueryId(string $sql) {
+    // Este metodo tambien debe usarse con una sentencia 
+    // INSERT para insertar registros
+
+    // inserta un registro y además
+    // retorna el ultimo id  de la fila que insertamos
+    // si no hay filas afectadas el metodo retornará cero
+
+    public function nonQueryId(string $sql) :int {
         $results = $this->conection->query($sql);
         $rows = $this->conection->affected_rows;
 

@@ -8,8 +8,6 @@ $conection = new Conection();
 
 // $sql = "INSERT INTO pacientes (DNI) VALUE ('20')";
 
-$sql = "SELECT * FROM pacientes";
+$sql = "INSERT INTO pacientes (DNI) VALUES ('2')";
 
-// print_r($conection->nonQueryId($sql));
-
-var_dump($conection->getData($sql));
+var_dump($conection->nonQueryId($sql));
