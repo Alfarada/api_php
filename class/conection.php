@@ -57,7 +57,7 @@ class Conection {
         return $array;
     }
 
-    public function getData(string $sql) {
+    public function getData($sql) {
         $results = $this->conection->query($sql);
         $resultArr = [];
         foreach ($results as $key) {
