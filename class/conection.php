@@ -57,7 +57,7 @@ class Conection {
         return $array;
     }
 
-    public function getData($sql) {
+    public function getData(string $sql) {
         $results = $this->conection->query($sql);
         $resultArr = [];
         foreach ($results as $key) {
@@ -65,5 +65,25 @@ class Conection {
         }
 
         return $this->convertUTF8($resultArr);
+    }
+
+
+    // retorna 1 si una fila ha sido afectada
+    // retorna -1 si no se ha afectado ninguna fila
+    public function nonQuery(string $sql) :int {
+        $results = $this->conection->query($sql);
+        return $this->conection->affected_rows;
+    }
+    
+    // retorna el id 
+    public function nonQueryId(string $sql) {
+        $results = $this->conection->query($sql);
+        $rows = $this->conection->affected_rows;
+
+        if ($rows >= 1) {
+            return $this->conection->insert_id;
+        } else {
+            return 0;
+        }
     }
 }
