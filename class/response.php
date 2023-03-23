@@ -2,7 +2,7 @@
 
 class Response {
 
-    private array $response = [
+    public array $response = [
         "status" => "ok",
         "result" => []
     ];
@@ -31,6 +31,16 @@ class Response {
         $this->response['status'] = 'error';
         $this->response['result'] = [
             "error_id" => "200",
+            "error_msg" => $message
+        ];
+
+        return $this->response;
+    }
+
+    public function http_status_500(string $message = "Error interno del servidor") :array {
+        $this->response['status'] = 'error';
+        $this->response['result'] = [
+            "error_id" => "500",
             "error_msg" => $message
         ];
 

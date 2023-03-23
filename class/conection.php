@@ -36,7 +36,6 @@ class Conection {
             die('Connect Error: ' . $this->conection->connect_errno);
         }
 
-        // echo 'conexion exitosa';
     }
 
     private function dataConection() {
@@ -94,5 +93,10 @@ class Conection {
         } else {
             return 0;
         }
+    }
+
+    protected function encrypt(string $password) :string
+    {
+        return md5($password);
     }
 }
