@@ -17,10 +17,10 @@ class Response {
         return $this->response;
     }
     
-    public function http_status_404() :array {
+    public function http_status_400() :array {
         $this->response['status'] = 'error';
         $this->response['result'] = [
-            "error_id" => "405",
+            "error_id" => "400",
             "error_msg" => "incomplete data or incorrect format"
         ];
 

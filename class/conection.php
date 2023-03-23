@@ -36,7 +36,7 @@ class Conection {
             die('Connect Error: ' . $this->conection->connect_errno);
         }
 
-        echo 'conexion exitosa';
+        // echo 'conexion exitosa';
     }
 
     private function dataConection() {
