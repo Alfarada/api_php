@@ -122,7 +122,7 @@ class patients extends conection
         } else {
 
             $this->pacienteId = $data['pacienteId'];
-            
+
             if (isset($data['nombre'])) {
                 $this->nombre = $data['nombre'];
             }
@@ -150,8 +150,6 @@ class patients extends conection
 
             $insertId = $this->modifyPatients(); 
 
-            // var_dump($insertId);
-
             if ($insertId) {
                 $response = $_response->response;
                 $response['result'] = [
@@ -178,4 +176,42 @@ class patients extends conection
         }
     }
 
+    public function delete($json)
+    {
+        $_response = new Response();
+        $data = json_decode($json, true);
+
+        
+        if (!isset($data['pacienteId'])) {
+            return $_response->http_status_400();
+        } else {
+
+            // var_dump($data['pacienteId']);
+
+            $this->pacienteId = $data['pacienteId'];
+ 
+            $deleteId = $this->deleteUser(); 
+
+            if ($deleteId) {
+                $response = $_response->response;
+                $response['result'] = [
+                    "pacienteId" => $this->pacienteId,
+                ];
+
+                return $response;
+            } else {
+
+                return $_response->http_status_500();
+            }
+        }
+    }
+    
+    private function deleteUser() {
+        $sql = " DELETE FROM " . $this->table . " WHERE PacienteId = '" . $this->pacienteId . "'";
+
+        $resp = parent::nonQuery($sql);
+
+        return ($resp >= 1) ? $resp : 0;
+    }
 }
+ 

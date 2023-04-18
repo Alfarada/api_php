@@ -11,7 +11,6 @@ $_patients = new patients();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // echo 'hola get';
     if (isset($_GET['page'])) {
         $page = (int) $_GET['page'];
         $list = $_patients->patientsList($page);
@@ -67,7 +66,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode($array_data);
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    echo 'hola delete';
+    // recibimos los datos 
+    $post_body = file_get_contents("php://input");
+    // enviamos datos al manejador
+    $array_data =  $_patients->delete($post_body);
+
+    //devolvemos una respuesta 
+    header('Content-type: application/json');
+
+    if (isset($array_data['result']['error_id'])) {
+        $response_code = $array_data['result']['error_id'];
+        http_response_code($response_code);
+    } else {
+        http_response_code(200);
+    }
+
+    echo json_encode($array_data);
+
 } else {
     header('Content-type: application/json');
     $data_array = $_response->http_status_405();
