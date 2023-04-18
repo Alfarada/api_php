@@ -47,7 +47,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode($array_data);
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    echo 'hola put';
+    
+    // recibimos los datos 
+    $post_body = file_get_contents("php://input");
+
+    // enviamos datos al manejador
+    $array_data =  $_patients->put($post_body);
+    
+    //devolvemos una respuesta 
+    header('Content-type: application/json');
+
+    if (isset($array_data['result']['error_id'])) {
+        $response_code = $array_data['result']['error_id'];
+        http_response_code($response_code);
+    } else {
+        http_response_code(200);
+    }
+
+    echo json_encode($array_data);
+
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     echo 'hola delete';
 } else {

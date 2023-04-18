@@ -9,7 +9,7 @@ class patients extends conection
 {
 
     private string $table = 'pacientes';
-    private $patientsId = "";
+    private $pacienteId = "";
     private $dni = "";
     private $nombre = "";
     private $direccion = "";
@@ -110,4 +110,72 @@ class patients extends conection
             return 0;
         }
     }
+
+    public function put($json)
+    {
+        $_response = new Response();
+        $data = json_decode($json, true);
+
+        
+        if (!isset($data['pacienteId'])) {
+            return $_response->http_status_400();
+        } else {
+
+            $this->pacienteId = $data['pacienteId'];
+            
+            if (isset($data['nombre'])) {
+                $this->nombre = $data['nombre'];
+            }
+            if (isset($data['dni'])) {
+                $this->dni = $data['dni'];
+            }
+            if (isset($data['correo'])) {
+                $this->correo = $data['correo'];
+            }
+            if (isset($data['telefono'])) {
+                $this->telefono = $data['telefono'];
+            }
+            if (isset($data['direccion'])) {
+                $this->direccion = $data['direccion'];
+            }
+            if (isset($data['codigoPostal'])) {
+                $this->codigoPostal = $data['codigoPostal'];
+            }
+            if (isset($data['genero'])) {
+                $this->genero = $data['genero'];
+            }
+            if (isset($data['fechaNacimiento'])) {
+                $this->fechaNacimiento = $data['fechaNacimiento'];
+            }
+
+            $insertId = $this->modifyPatients(); 
+
+            // var_dump($insertId);
+
+            if ($insertId) {
+                $response = $_response->response;
+                $response['result'] = [
+                    "pacienteId" => $this->pacienteId,
+                ];
+
+                return $response;
+            } else {
+
+                return $_response->http_status_500();
+            }
+        }
+    }
+
+    public function modifyPatients() {
+        $query = " UPDATE " . $this->table . " SET Nombre = '" . $this->nombre . "', Direccion = '" . $this->direccion . "', DNI = '" . $this->dni . "', CodigoPostal = '" . $this->codigoPostal . "', Telefono = '" . $this->telefono . "', Genero = '" . $this->genero . "', FechaNacimiento = '" . $this->fechaNacimiento . "', Correo = '" . $this->correo . "' WHERE pacienteId = '" . $this->pacienteId . "'";
+        
+        $response = $this->nonQuery($query);
+
+        if ($response >= 1) {
+            return $response;
+        } else {
+            return 0;
+        }
+    }
+
 }
