@@ -61,7 +61,6 @@ class Auth extends Conection
                 // no exite el usuario
                 return $_response->http_status_200("El usuario {$user} no existe");
             }
-
         }
     }
 

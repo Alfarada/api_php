@@ -12,12 +12,15 @@ $_patients = new patients();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['page'])) {
+
         $page = (int) $_GET['page'];
         $list = $_patients->patientsList($page);
         header('Content-type: application/json');
         echo json_encode($list);
         http_response_code(200);
+
     } else if (isset($_GET['id'])) {
+
         $patient_id = $_GET['id'];
         $patient_data = $_patients->getPatient($patient_id);
         header('Content-type: application/json');
@@ -30,15 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $post_body = file_get_contents("php://input");
     // manejador
     $array_data = $_patients->post($post_body);
-
-    // print_r($response);
-
+    
     //devolvemos una respuesta 
-    header('Content-type: application/json');
+    // header('Content-type: application/json');
 
     if (isset($array_data['result']['error_id'])) {
-        $response_code = $array_data['result']['error_id'];
+
+        $response_code = (int) $array_data['result']['error_id'];
         http_response_code($response_code);
+
     } else {
         http_response_code(200);
     }
@@ -51,13 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $post_body = file_get_contents("php://input");
 
     // enviamos datos al manejador
-    $array_data =  $_patients->put($post_body);
+    $array_data = $_patients->put($post_body);
+
+    // var_dump($array_data);
     
     //devolvemos una respuesta 
-    header('Content-type: application/json');
+    // header('Content-type: application/json');
 
     if (isset($array_data['result']['error_id'])) {
-        $response_code = $array_data['result']['error_id'];
+        // echo "<p>hay un error</p>";
+        $response_code = (int) $array_data['result']['error_id'];
         http_response_code($response_code);
     } else {
         http_response_code(200);
@@ -75,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     header('Content-type: application/json');
 
     if (isset($array_data['result']['error_id'])) {
-        $response_code = $array_data['result']['error_id'];
+        $response_code = (int) $array_data['result']['error_id'];
         http_response_code($response_code);
     } else {
         http_response_code(200);

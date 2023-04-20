@@ -46,4 +46,15 @@ class Response {
 
         return $this->response;
     }
+
+
+    public function http_status_401(string $message = "No autorizado") :array {
+        $this->response['status'] = 'error';
+        $this->response['result'] = [
+            "error_id" => "401",
+            "error_msg" => $message
+        ];
+
+        return $this->response;
+    }
 }
